@@ -1,3 +1,6 @@
+import os
+import time
+
 class PasswordManager:
     def __init__(self):
         self.passwords = []
@@ -10,7 +13,7 @@ class PasswordManager:
         has_lower = False
         has_digit = False
         has_special = False
-        special_characters = "!@#$%^&*()-_=+[{]}\|;:,<.>/?`~"
+        special_characters = "!@#$%_-"
 
         for char in password:
             if char.isupper():
@@ -45,15 +48,39 @@ class PasswordManager:
 
 if __name__ == "__main__":
     pm_object = PasswordManager()
-    pm_object.set_password("password")
-    print(pm_object.get_password())
-    print(pm_object.is_correct_password("password"))
-    print(pm_object.is_correct_password("password1"))
+    status = True
+    isUserAuthenticated = False
+    def clear_screen():
+        time.sleep(1)
+        os.system('cls' if os.name == 'nt' else 'clear')
+        
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print("Welcome to Password Manager!")
     
-    pm_object.set_password("password")
-    
-    pm_object.set_password("password1")
-    
-    print(pm_object.get_password())
-    print(pm_object.is_correct_password("password"))
-    print(pm_object.is_correct_password("password1"))
+    while status:
+        print("1. Set Password")
+        print("2. Get Password")
+        print("3. Check Password")
+        print("4. Exit")
+        choice = int(input("Enter your choice: "))
+        if choice == 1:
+            new_password = input("Enter new password: ")
+            pm_object.set_password(new_password)
+        elif choice == 2:
+            if not isUserAuthenticated:
+                print("Please authenticate yourself first.")
+            else:
+                print(pm_object.get_password())
+        elif choice == 3:
+            password = input("Enter your password: ")
+            if pm_object.is_correct_password(password):
+                isUserAuthenticated = True
+                print("Password is correct!")
+            else:
+                print("Password is incorrect! (or) no password set yet.")
+        elif choice == 4:
+            status = False
+        else:
+            print("Invalid choice. Please enter a valid choice.")
+        
+        clear_screen()
